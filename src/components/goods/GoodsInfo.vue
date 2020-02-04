@@ -32,7 +32,7 @@
             <mt-button type="primary" size="small">立即购买</mt-button>
             <mt-button type="danger" size="small" @click="addToShopCar">加入购物车</mt-button>
            
-            <!--分析:如何实现加入购物车是猴；拿到选择的数量-->
+            <!--分析:如何实现加入购物车时候；拿到选择的数量-->
             <!--1.经过分析发现：按钮属于goodsinfo页面，数字属于numberbox组件-->
             <!--2.由于涉及到了父子组件的嵌套了，所以，无法直接在goodsinfo页面中获取到选中的商品数量值-->
             <!--3.怎么解决这个问题:涉及到了子组件向父组件传值了(事件调用机制)-->
@@ -116,6 +116,16 @@ export default {
     addToShopCar() {
       //添加到购物车
       this.ballFlag = !this.ballFlag;
+       //{ id:商品的id, count: 要购买的数量, price: 商品的单价, selected: false }
+       //拼接出一个，要保存到store中car数组里的商品信息对象
+       var goodsinfo = {
+         id: this.id,
+         count: this.selectedCount,
+         price: this.goodsinfo.sell_price,
+         selected: true
+       };
+       //调用store中mutations来将商品加入购物车
+       this.$store.commit("addToCar", goodsinfo);
     },
     beforeEnter(el){
       el.style.transform = "translate(0, 0)";
